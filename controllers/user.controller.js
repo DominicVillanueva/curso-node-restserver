@@ -1,38 +1,64 @@
 const { response, request } = require('express');
- 
+const bcryptjs = require('bcryptjs');
 
-const userGet = (req = request, res = response) => {
-    const { nombre = 'Not name', api_key, page = 1, limit } = req.query;
+const UserModel = require('../models/user.model');
+
+const userGet = async (req = request, res = response) => {
+
+    const { limit = 5, from = 0 } = req.query;
+    const query = {status: true};
+    
+    const [total, users] = await Promise.all([
+        UserModel.countDocuments(query),
+        UserModel.find(query)
+                .skip(Number(from))
+                .limit(Number(limit)),
+    ]);
+
     res.json({
-        msg: 'get API - userGet',
-        nombre,
-        api_key,
-        page,
-        limit,
+        total,
+        users
     });
 };
 
-const userPut = (req, res) => {
-    const idUser = req.params.id;
-    res.status(400).json({
-        msg: 'put API - userPut',
-        idUser,
-    });
+const userPut = async(req, res) => {
+    const { id } = req.params;
+    const { _id, password, google, correo, ...user } = req.body;
+
+    if(password) {
+        // Encriptar la contraseña
+        const salt = bcryptjs.genSaltSync();
+        user.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const userUpdate = await UserModel.findByIdAndUpdate(id, user);
+
+    res.json(userUpdate);
 };
 
-const userPost = (req, res) => {
-    const { nombre, edad } = req.body;
-    res.status(201).json({
-        msg: 'post API - userPost',
-        nombre,
-        edad,
-    });
-};
+const userPost = async(req, res) => {
+    const { name, email, password, role } = req.body;
+    const user = new UserModel({ name, email, password, role });
 
-const userDelete = (req, res) => {
+    // Encriptar la contraseña
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync(password, salt);
+
+    // Guardar en BD
+    await user.save();
+
     res.json({
-        msg: 'delete API - userDelete',
+        user,
     });
+};
+
+const userDelete = async (req, res = response) => {
+    const { id } = req.params;
+
+    // Fisicamente borraros el registro
+    // const user = await UserModel.findByIdAndDelete(id);
+    const user = await UserModel.findByIdAndUpdate(id, { status: false });
+    res.json(user);
 };
 
 const userPatch = (req, res) => {
