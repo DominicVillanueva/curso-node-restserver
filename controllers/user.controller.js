@@ -54,11 +54,12 @@ const userPost = async(req, res) => {
 
 const userDelete = async (req, res = response) => {
     const { id } = req.params;
-
     // Fisicamente borraros el registro
     // const user = await UserModel.findByIdAndDelete(id);
     const user = await UserModel.findByIdAndUpdate(id, { status: false });
-    res.json(user);
+    res.json({
+        user,
+    });
 };
 
 const userPatch = (req, res) => {

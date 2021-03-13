@@ -10,6 +10,7 @@ class Server {
 
         // endpoints
         this.userRoutes = '/api/users';
+        this.authPath = '/api/auth';
 
         // Conectar a la BD
         this.connectarDB();
@@ -38,6 +39,7 @@ class Server {
 
     routes() {
         this.app.use(this.userRoutes, require('../routes/user.routes'));
+        this.app.use(this.authPath, require('../routes/auth.routes'));
     }
 
     listen() {
