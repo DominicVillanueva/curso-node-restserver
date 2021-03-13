@@ -24,7 +24,7 @@
     <script>
         var url = (window.location.hostname.includes("localhost"))
                     ? 'http://localhost:3000/api/auth/google'
-                    : 'https://restserver-curso-dom.herokuapp.com';
+                    : 'https://restserver-curso-dom.herokuapp.com/api/auth/google';
         
         function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
