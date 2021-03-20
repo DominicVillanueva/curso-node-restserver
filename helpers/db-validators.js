@@ -1,8 +1,7 @@
-const Role = require('../models/role.model');
-const UserModel = require('../models/user.model');
+const { CategoryModel, UserModel, RoleModel, ProductModel } = require('../models');
 
 const isValidRole = async(role = '') => {
-    const isExistRole = await Role.findOne({ role });
+    const isExistRole = await RoleModel.findOne({ role });
     if(!isExistRole) throw new Error(`El rol ${ role } no está registrado en la BD`);
 };
 
@@ -12,12 +11,30 @@ const isValidEmail = async(email = '') => {
 }
 
 const isValidIDUser = async(id = '') => {
-    const isExistIDUser = await UserModel.findById(id);
-    if(!isExistIDUser) throw new Error(`El ID (${ id }) no existe`); 
+    const isExistUser = await UserModel.findById(id);
+    if(!isExistUser) throw new Error(`El ID (${ id }) no existe`); 
+}
+
+const isValidIdCategory = async(id = '') => {
+    const isExistCategory = await CategoryModel.findById(id);
+    if(!isExistCategory) throw new Error(`El ID (${ id }) no existe`);
+};
+
+const isValidIdProduct = async(id = "") => {
+    const isExistProduct = await ProductModel.findById(id);
+    if(!isExistProduct) throw new Error(`El ID (${ id }) no existe`);
+};
+
+const isExistNameProduct = async(name= '') => {
+    const isValidName = await ProductModel.findOne({ name });
+    if(isValidName) throw new Error(`El nombre ${ name } se encuentra registrado`);
 }
 
 module.exports = {
     isValidRole,
     isValidEmail,
-    isValidIDUser
+    isValidIDUser,
+    isValidIdCategory,
+    isValidIdProduct,
+    isExistNameProduct,
 }

@@ -28,7 +28,7 @@ const validarJWT = async (req = request, res = response, next) => {
             });
         }
 
-        req.user = currentUser;
+        req.user = currentUser; // Crear un nuevo valor para el req con el usuario logueado
         next();
     } catch (error) {
         console.log(error);
