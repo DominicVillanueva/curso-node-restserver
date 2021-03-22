@@ -12,7 +12,8 @@ const isValidEmail = async(email = '') => {
 
 const isValidIDUser = async(id = '') => {
     const isExistUser = await UserModel.findById(id);
-    if(!isExistUser) throw new Error(`El ID (${ id }) no existe`); 
+    if(!isExistUser) throw new Error(`El ID (${ id }) no existe`);
+    return true; 
 }
 
 const isValidIdCategory = async(id = '') => {
@@ -23,11 +24,22 @@ const isValidIdCategory = async(id = '') => {
 const isValidIdProduct = async(id = "") => {
     const isExistProduct = await ProductModel.findById(id);
     if(!isExistProduct) throw new Error(`El ID (${ id }) no existe`);
+    return true;
 };
 
 const isExistNameProduct = async(name= '') => {
     const isValidName = await ProductModel.findOne({ name });
     if(isValidName) throw new Error(`El nombre ${ name } se encuentra registrado`);
+}
+
+/**
+ * Collections Valid
+ */
+const allowedCollections = (nameCollection = '', collections = []) => {
+    const validCollection = collections.includes(nameCollection);
+    if(!validCollection) throw new Error(`La colección ${ nameCollection } no es permita, colecciones permitidas ${ collections }`);
+
+    return  true;
 }
 
 module.exports = {
@@ -37,4 +49,5 @@ module.exports = {
     isValidIdCategory,
     isValidIdProduct,
     isExistNameProduct,
+    allowedCollections,
 }
