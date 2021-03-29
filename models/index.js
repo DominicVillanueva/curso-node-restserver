@@ -3,6 +3,7 @@ const RoleModel = require('./role.model');
 const server = require('./server');
 const UserModel = require('./user.model');
 const ProductModel = require('./product.model');
+const MessageModel = require('./message.model');
 
 module.exports = {
     CategoryModel,
@@ -10,4 +11,5 @@ module.exports = {
     server,
     UserModel,
     ProductModel,
+    MessageModel,
 }

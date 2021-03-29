@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node -r dotenv-safe/config app.js",
+    "start": "nodemon -r dotenv-safe/config app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "google-auth-library": "^7.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.15",
+    "socket.io": "^4.0.0",
     "uuid": "^8.3.2"
   }
 }
